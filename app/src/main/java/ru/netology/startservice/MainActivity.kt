@@ -16,6 +16,8 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        val intent = Intent(this@MainActivity, StartService::class.java)
+        startService(intent)
     }
 }
 
@@ -24,7 +26,7 @@ class StartService : Service() {
     override fun onBind(intent: Intent?): IBinder? = null
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        Log.d("SecondService", "onStartCommand called")
+        //Log.d("SecondService", "onStartCommand called")
         thread {
             Thread.sleep(5000)
             val intent = Intent(this@StartService, SecondService::class.java)
@@ -48,14 +50,14 @@ class SecondService : Service() {
             .setSmallIcon(R.drawable.ic_launcher_foreground)
             .build()
         startForeground(1, notification)
-        Log.d("SecondService", "Foreground started")
+       // Log.d("SecondService", "Foreground started")
         thread {
             Thread.sleep(40000)
             val intent = Intent(this@SecondService, MainActivity::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             startActivity(intent)
             stopSelf()
-            Log.d("SecondService", "SecondService завершён")
+                //Log.d("SecondService", "SecondService завершён")
         }
         return START_NOT_STICKY
     }
